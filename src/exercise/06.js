@@ -36,7 +36,7 @@ function PokemonInfo({pokemonName}) {
   const [pokemon, setPokemon] = React.useState(null)
 
   React.useEffect(() => {
-    if (!pokemonName || pokemonName === '') {
+    if (!pokemonName) {
       return
     }
     setPokemon(null)
@@ -49,7 +49,7 @@ function PokemonInfo({pokemonName}) {
 
   return (
     <>
-      {!pokemonName || pokemonName === '' ? (
+      {!pokemonName ? (
         'Submit a Pokemon'
       ) : !pokemon ? (
         <PokemonInfoFallback name={pokemonName} />
