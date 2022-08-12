@@ -6,7 +6,12 @@ import * as React from 'react'
 // fetchPokemon: the function we call to get the pokemon info
 // PokemonInfoFallback: the thing we show while we're loading the pokemon info
 // PokemonDataView: the stuff we use to display the pokemon info
-import {PokemonForm} from '../pokemon'
+import {
+  fetchPokemon,
+  PokemonDataView,
+  PokemonForm,
+  PokemonInfoFallback,
+} from '../pokemon'
 
 function PokemonInfo({pokemonName}) {
   // 🐨 Have state for the pokemon (null)
@@ -25,8 +30,34 @@ function PokemonInfo({pokemonName}) {
   //   2. pokemonName but no pokemon: <PokemonInfoFallback name={pokemonName} />
   //   3. pokemon: <PokemonDataView pokemon={pokemon} />
 
-  // 💣 remove this
-  return 'TODO'
+  // 💣 remove this:
+  // return 'TODO'
+
+  const [pokemon, setPokemon] = React.useState(null)
+
+  React.useEffect(() => {
+    if (!pokemonName || pokemonName === '') {
+      return
+    }
+    setPokemon(null)
+    const fetch = async () => {
+      const pokemonData = await fetchPokemon(pokemonName)
+      setPokemon(pokemonData)
+    }
+    fetch()
+  }, [pokemonName])
+
+  return (
+    <>
+      {!pokemonName || pokemonName === '' ? (
+        'Submit a Pokemon'
+      ) : !pokemon ? (
+        <PokemonInfoFallback name={pokemonName} />
+      ) : (
+        <PokemonDataView pokemon={pokemon} />
+      )}
+    </>
+  )
 }
 
 function App() {
