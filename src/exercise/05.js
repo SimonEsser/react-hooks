@@ -28,8 +28,22 @@ function Tilt({children}) {
   // this for a more in depth explanation.
 
   // 🐨 add the `ref` prop to the `tilt-root` div here:
+
+  const tiltRef = React.useRef()
+
+  React.useEffect(() => {
+    const tiltNode = tiltRef.current
+    VanillaTilt.init(tiltNode, {
+      max: 25,
+      speed: 400,
+      glare: true,
+      'max-glare': 0.5,
+    })
+    return () => tiltNode.vanillaTilt.destroy()
+  }, [])
+
   return (
-    <div className="tilt-root">
+    <div className="tilt-root" ref={tiltRef}>
       <div className="tilt-child">{children}</div>
     </div>
   )
