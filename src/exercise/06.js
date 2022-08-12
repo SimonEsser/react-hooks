@@ -33,9 +33,13 @@ function PokemonInfo({pokemonName}) {
   // 💣 remove this:
   // return 'TODO'
 
-  const [pokemon, setPokemon] = React.useState(null)
-  const [error, setError] = React.useState(null)
-  const [status, setStatus] = React.useState('idle')
+  const [state, setState] = React.useState({
+    status: 'idle',
+    pokemon: null,
+    error: null,
+  })
+
+  const {pokemon, error, status} = state
 
   const isIdle = status === 'idle'
   const isPending = status === 'pending'
@@ -47,15 +51,21 @@ function PokemonInfo({pokemonName}) {
       return
     }
 
-    setStatus('pending')
+    setState(state => ({...state, status: 'pending'}))
     const fetch = async () => {
       try {
         const pokemonData = await fetchPokemon(pokemonName)
-        setPokemon(pokemonData)
-        setStatus('resolved')
+        setState(state => ({
+          ...state,
+          status: 'resolved',
+          pokemon: pokemonData,
+        }))
       } catch (err) {
-        setError(err)
-        setStatus('rejected')
+        setState(state => ({
+          ...state,
+          status: 'rejected',
+          error: err,
+        }))
       }
     }
 
